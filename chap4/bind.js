@@ -1,6 +1,10 @@
 // lodash bind
 const partial = require('./partial');
 
+// 2020/3/23
+// lodash 实现有点绕，还要再研究一下
+// 似乎除了支持类似 partial 的 placeholder 占位功能
+// 还支持 new 调用？？
 function bind() {
 
 }

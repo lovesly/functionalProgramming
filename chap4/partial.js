@@ -23,5 +23,10 @@ String.prototype.first = partial(String.prototype.substring, 0, '_');
 const res = 'Functional Programming'.first(3);
 console.log(res);
 
+String.prototype.asName = partial(String.prototype.replace, /(\w+)\s(\w+)/, '$2 $1');
+console.log('Alonzo Church'.asName());
+// ?? why use [\w]?
+String.prototype.explode = partial(String.prototype.match, /[\w]/gi);
+console.log('ABC'.explode);
 
 module.exports = partial;
