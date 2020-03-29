@@ -44,8 +44,9 @@ class Left extends Either {
   }
 
   // 书上完全是乱套的，太差劲了。
+  // Left could have a value?
   orElse(f) {
-    return this;
+    return f(this._value);
   }
 
   chain(f) {
@@ -98,7 +99,43 @@ class Right extends Either {
 
 /**
  * 在我看来，几乎没有什么区别啊，为什么要搞个 Either 出来，为什么不用 just 和 nothing？
+ * 和 maybe 有点区别，maybe 感觉是侧重于无效数据的检测，包裹在 maybe 里，无限取值没有问题
+ * 而 Either 如书上所说，左值包含一个可能的错误信息，可以为失败提供更多信息。。。
+ * 哇，需要多研究看几遍
+ * 还是感觉很像，empty 也可以保存个错误信息啊？
  */
 
 // ====================================== //
 // ================ test ================ //
+
+const safeFindObject = R.curry(function(db, id) {
+  // hmm...
+  const obj = find(db, id);
+  if (obj) {
+    return Either.of(obj);
+  }
+  // Left can contain a value??
+  return Either.Left(`Object not found iwth ID: ${id}`);
+});
+
+function find(db, id) {
+  return {
+    Yo: 'Shit'
+  };
+}
+
+const res = safeFindObject('db', 'id');
+// 这里有点体会了
+res.getOrElse('if not found, return a new student.');
+// 有点意思，Right 会返回自身。Left 会把 函数作用在 错误信息上。可以直接 log
+res.orElse(console.log);
+
+console.log(res);
+// wait, what?
+let tmp = res.map((obj) => {
+  obj.plus = 'Fuck';
+  return obj;
+});
+
+console.log(tmp.toString())
+console.log(tmp.value);
