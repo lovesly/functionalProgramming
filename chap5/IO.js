@@ -83,3 +83,7 @@ function partial(fn, ...rest) {
   };
   return bound;
 }
+
+module.exports = {
+  append: writeDom,
+}

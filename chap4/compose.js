@@ -38,3 +38,7 @@ const isValidSSN = compose2(checkLengthSSN, cleanInput);
 
 console.log(cleanInput(' 444-44-4444 '));
 console.log(isValidSSN(' 444-44-4444 '));
+
+module.exports = {
+  cleanInput,
+}

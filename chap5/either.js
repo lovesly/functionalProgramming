@@ -1,5 +1,5 @@
 const R = require('ramda');
-
+// import * as R from 'ramda';
 class Either {
   constructor(value) {
     this._value = value;
@@ -20,7 +20,7 @@ class Either {
   static fromNullable(val) {
     // very similar
     // return a !== null ? Maybe.just(a) : Maybe.nothing();
-    return val !== null ? Either.right(val) : Either.left(val);
+    return val !== null && val !== undefined ? Either.right(val) : Either.left(val);
   }
 
   static of(a) {
@@ -62,21 +62,34 @@ class Left extends Either {
     return this;
   }
 
-  // ??
+  get isRight() {
+    return false;
+  }
+
+  get isLeft() {
+    return true;
+  }
+
+  // ?? 错误信息？
   toString() {
-    return `Either.Left(), find nothing, stupid translator.`;
+    return `Either.Left(${this._value})`;
   }
 }
 
 class Right extends Either {
   map(f) {
-    // return Either.of(f(this._value));
-    return Either.fromNullable(f(this._value));
+    return Either.of(f(this._value));
+    // 为什么不是这个呢？这样就有可能包裹一个错误值比如 null
+    // return Either.fromNullable(f(this._value));
   }
 
   getOrElse(other) {
     // value is awlays valid, right?
     return this._value;
+  }
+
+  orElse() {
+    return this;
   }
 
   chain(f) {
@@ -91,6 +104,14 @@ class Right extends Either {
   filter(f) {
     return Either.fromNullable(f(this._value) ? this._value : null);
   }
+
+  get isRight() {
+		return true;
+	}
+
+	get isLeft() {
+		return false;
+	}
 
   toString() {
     return `Either.Right(${this._value})`;
@@ -139,3 +160,9 @@ let tmp = res.map((obj) => {
 
 console.log(tmp.toString())
 console.log(tmp.value);
+
+module.exports = {
+  Either, 
+  Left, 
+  Right
+};
