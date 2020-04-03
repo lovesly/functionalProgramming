@@ -6,6 +6,7 @@ const { Maybe } = require('./maybe');
 const { Either } = require('./either');
 const { cleanInput } = require('../chap4/compose');
 const { append } = require('./IO');
+const { db } = require('../helper/helper');
 
 const validLength = (len, str) => str.length === len;
 // 感觉有点问题
@@ -16,18 +17,12 @@ const checkLengthSSN = function(ssn) {
 
 // fake db method?
 const safeFindObject = R.curry(function(db, id) {
-  const validObj = {
-    ssn: '444444444',
-    firstname: 'z',
-    lastname: 'l',
-  };
-  const invalidObj = null;
-  return Either.fromNullable(validObj)
+  return Either.fromNullable(db.find(id));
   // .getOrElseThrow(`Object not found with ID: ${id}`);
 });
 
 // fake
-const findStudent = safeFindObject('db');
+const findStudent = safeFindObject(db);
 
 const csv = arr => arr.join(',');
 
