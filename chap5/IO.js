@@ -33,6 +33,10 @@ class IO {
   run() {
     return this.effect();
   }
+
+  toString() {
+    return `IO(${this.effect})`;
+  }
 }
 
 // ============== test ============== //
@@ -86,4 +90,5 @@ function partial(fn, ...rest) {
 
 module.exports = {
   append: writeDom,
+  IO,
 }
